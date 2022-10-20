@@ -31,3 +31,21 @@ Cypress.Commands.add('login', (email, senha) => {
     cy.get('[data-test="login-submit"]').click()
 
 })
+
+import user from "../fixtures/usuario.json";
+
+Cypress.Commands.add('token', () => {
+    cy.request({
+        method: 'POST',
+        url: 'api/auth',
+        body: {
+            "email": user.email,
+            "password": user.senha
+        }
+    }).then((response) => {
+        expect(response.status).to.equal(200) //opcional
+        return response.body.jwt
+    })
+
+})
+
